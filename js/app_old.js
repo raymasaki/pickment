@@ -2,7 +2,7 @@
 
 @authorName: Ray Masaki
 @dateCreated: 10.14.2015
-@lastUpdated: 10.15.2015
+@lastUpdated: 10.14.2015
 @projectName: Pickment
 
 ************************/
@@ -77,6 +77,22 @@ var $game = $('#game');
 
 $(document).ready(function() {
 
+  var $picker = $('.picker');
+
+
+
+  /* Mouse Cursor */
+  // http://stackoverflow.com/questions/3385936/jquery-follow-the-cursor-with-a-div
+
+  var mouseMove = function (e) {
+      $picker.css({
+        left: e.pageX - 35,
+        top: e.pageY - 35
+      });
+  };
+
+  $(document).on('mousemove', mouseMove);
+
   /* Intro Logic */
 
   var $startButton = $('.start-button');
@@ -93,7 +109,7 @@ $(document).ready(function() {
 
   /* Level Count */
 
-  var levelCount = 1;
+  var levelCount = 17;
 
   var $levelCountIntro = $('#level-count > h1');
   $levelCountIntro.text("Level " + levelCount);
@@ -111,48 +127,65 @@ $(document).ready(function() {
   /* Picker Color */
 
   var colorLen = colorVals.length;
-
-  var currentColor = null;
+  // console.log(colorLen);
 
   var changePickerColor = function() {
     var randomColor = Math.floor(Math.random() * colorLen);
 
     var newColorHex = colorVals[randomColor].colorHex;
-    var cursorColor = colorVals[randomColor].colorName;
-    currentColor = cursorColor;
-
-    console.log(currentColor);
-
-    $('body').css('cursor', '-webkit-image-set( url(images/picker_' + cursorColor + '.svg) 1x, url(images/picker_' + cursorColor + '.svg) 2x), auto');
+    var newColorName = colorVals[randomColor].colorName;
+    $picker.css('background', newColorHex);
 
     createCell(levelCount);
   };
 
-  /* Create Cell */
 
-  var createCell = function(level) {
-    for (var i = 0; i < level; i++) {
+  /*
+  Logic for creating cells:
+  - Math.round(square root of level) = how many rows
+  - level/sqrt = how many per row
+  - 100 / cells per row = % width of each cell
+  - level % sqrt = how many cells on the last row
+  - create a colorWord element in the cell
+  */
 
-      var randomColor = Math.floor(Math.random() * colorLen);
+  // 2 factors without modulo
 
-      var $newCell = $('<div class="cell">');
-      var $colorText = $('<h1>');
+  var createCell = function(levelCount) {
+    // for each level count find the sq rt and round to find the amount of rows
+    // round down
+    var levelRoot = Math.floor(Math.sqrt(levelCount)); // 16 > 4
+    var cellPerRow = Math.ceil(levelCount / levelRoot); // 16 / 4 = 4
 
-      $newCell.append($colorText);
+    for (var i = 0; i < levelRoot; i++) {
+      // for each levelRoot make a new row
+      var $newRow = $('<div class="row">');
 
-      $colorText.text(currentColor);
-      $colorText.css('color', colorVals[randomColor].colorHex);
+      // for each row make a new cell
+      for (var j = 0; j < cellPerRow; j++) {
+        var randomColor = Math.floor(Math.random() * colorLen);
 
-      // within each cell make a colorWord
-      $game.append($newCell);
+        var $newCell = $('<div class="cell">');
+        $newCell.text(colorVals[randomColor].colorName);
+        // within each cell make a colorWord
+        $newRow.append($newCell);
+      }
+
+      $game.append($newRow);
+
     }
   };
 
+/*  var createCell = function(level) {
+    for (var i = 0; i < level; i++) {
+      var randomColor = Math.floor(Math.random() * colorLen);
 
-  var colorWord = $('cell > h1');
-  $('body').on('click', colorWord, function(e) {
-    console.log('Check win');
-  });
+      var $newCell = $('<div class="cell">');
+      $newCell.text(colorVals[randomColor].colorName);
+      // within each cell make a colorWord
+      $game.append($newRow);
+    }
+  };*/
 
 
   /*
