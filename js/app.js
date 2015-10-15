@@ -72,6 +72,7 @@ var colorVals = [{
 var pickerColor = 'default';
 var $game = $('#game');
 var currentColor = null;
+var timer = 2;
 
 
 /* Game */
@@ -100,6 +101,17 @@ $(document).ready(function() {
   var levelCountIntro = function() {
     levelCount++;
 
+    var currentHex = null;
+
+    // Grabs the hex for the current color
+    for (var j = 0; j < colorVals.length; j++) {
+      if (colorVals[j].colorName === currentColor) {
+        currentHex = colorVals[j].colorHex;
+      }
+    }
+
+    $('#level-count').css('background', currentHex);
+
     $levelCountIntro.text("Level " + levelCount);
 
     setTimeout(function() {
@@ -111,6 +123,7 @@ $(document).ready(function() {
     var newLevel = Level();
     newLevel.updateLevel();
     newLevel.createCell(levelCount);
+    newLevel.levelTimer(timer);
   };
 
   /* Picker Color */
@@ -134,7 +147,7 @@ $(document).ready(function() {
     newLevel.checkWin(clickedColor);
   });
 
-  var randomColorGen = function () {
+  var randomColorGen = function() {
     return Math.floor(Math.random() * colorLen);
   };
 
@@ -152,6 +165,7 @@ $(document).ready(function() {
   var Level = function() {
 
     return {
+
       /* Create Cell */
 
       createCell: function(level) {
@@ -176,7 +190,7 @@ $(document).ready(function() {
             $colorText.text(colorVals[randomColor].colorName);
 
             var currentHex = null;
-            
+
             // Grabs the hex for the current color
             for (var j = 0; j < colorVals.length; j++) {
               if (colorVals[j].colorName === currentColor) {
@@ -204,12 +218,16 @@ $(document).ready(function() {
         $('.level-num > p').text('level: ' + levelCount);
       },
 
+      levelTimer: function(time) {
+
+        $('.timer > p').text(time + ' sec');
+      },
+
       /* Check Win */
 
-      checkWin: function (colorText) {
+      checkWin: function(colorText) {
 
-        if (colorText === currentColor){
-          console.log("Correct");
+        if (colorText === currentColor) {
           $('#level-count').show();
           $game.empty();
           levelCountIntro();
