@@ -1,0 +1,10 @@
+body {
+  /* Temporary until I install webfont */
+  font-family: SuisseIntl-Medium, sans-serif;
+  font-size: 96px;
+}
+
+p.instructions {
+  font-family: 'Roboto Mono', sans-serif;
+  font-size: .4em;
+}

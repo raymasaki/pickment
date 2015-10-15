@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Pickment</title>
+  <link rel="stylesheet" href="stylesheets/reset.css">
+  <link href='https://fonts.googleapis.com/css?family=Roboto+Mono:500' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="stylesheets/style.css">
+</head>
+
+<body>
+
+  <div id="intro">
+    <!-- This is where all the intro stuff is. This div will hide once play button is pressed -->
+    <h1 class="logo">pickment</h1>
+    <p class="instructions">drag your mouse to the corresponding word not the corresponding color</p>
+    <p class="start_button">start</p>
+  </div>
+
+  <div id="game-container">
+    <!-- This is where the main game is played. -->
+
+    <div id="level-count">
+      <!-- level intro before the next level. setTimeout for a fadeout? -->
+    </div>
+
+    <header>
+      <div class="level-num"></div>
+      <div class="timer"></div>
+    </header>
+
+    <div id="game">
+      <!-- Dynamically creates divs based on the level count -->
+      <!--
+        Level 1: (100% wh)
+        Level 2: 2*(50% w 100% h)
+        Level 3: (100% w 50% h) 2*(50% w 50% h)
+        Level 4: 4*(50% w 50% h)
+        etc.
+       -->
+      <!-- Within each div put a single color based on an array of colors -->
+    </div>
+
+  </div>
+
+
+  <script src="js/app.js" type="text/javascript"></script>
+</body>
+
+</html>
