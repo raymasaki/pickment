@@ -4,7 +4,62 @@ body {
   font-size: 96px;
 }
 
-p.instructions {
+/* INTRO */
+
+p {
   font-family: 'Roboto Mono', sans-serif;
   font-size: .4em;
+  line-height: 1.3em;
+}
+p.instructions {
+  width: 60%;
+  padding-bottom: 30px;
+}
+#intro {
+  background: #E0A0B5;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: white;
+  z-index: 100;
+}
+#intro > .logo, #intro > p {
+  padding-left: 30px;
+}
+#intro .logo {
+  letter-spacing: -0.021em;
+  padding-top: 15px;
+}
+#intro h1 {
+  padding-bottom: 30px;
+}
+
+/* LEVEL INTRO */
+
+#level-count h1 {
+  color: white;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 95vh;
+}
+
+#level-count {
+  background: #71BBCE;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 50;
+}
+
+/* GAME */
+
+#game-container {
+  background: white;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
 }
