@@ -22,7 +22,7 @@ console.log('Loaded');
 10. if incorrect reveals intro div with updated highscore and start replaced with play again
 */
 
-/* Global Variables */
+/******************* Global Variables *******************/
 
 // May not be color safe look at 16bit colors
 var colorVals = [{
@@ -71,13 +71,14 @@ var colorVals = [{
 
 var pickerColor = 'white';
 var $game = $('#game');
+var currentColor = null;
 
 
 /* Game */
 
 $(document).ready(function() {
 
-  /* Intro Logic */
+  /******************* Intro *******************/
 
   var $startButton = $('.start-button');
   var $intro = $('#intro');
@@ -85,34 +86,36 @@ $(document).ready(function() {
   // Clicking start button will fade out intro and show level count intro
   $startButton.click(function(e) {
     $intro.fadeOut('fast');
-
     levelCountIntro();
   });
 
-
-
   /* Level Count */
 
-  var levelCount = 1;
+  var levelCount = 0;
 
   var $levelCountIntro = $('#level-count > h1');
+
+  levelCount++;
+
   $levelCountIntro.text("Level " + levelCount);
 
   // level count intro fades out after 1 second
   var levelCountIntro = function() {
 
-    changePickerColor();
-
     setTimeout(function() {
       $('#level-count').fadeOut('fast');
     }, 1000);
+
+    changePickerColor();
+
+    var newLevel = Level();
+    newLevel.updateLevel();
+    newLevel.createCell(levelCount);
   };
 
   /* Picker Color */
 
   var colorLen = colorVals.length;
-
-  var currentColor = null;
 
   var changePickerColor = function() {
     var randomColor = Math.floor(Math.random() * colorLen);
@@ -121,37 +124,14 @@ $(document).ready(function() {
     var cursorColor = colorVals[randomColor].colorName;
     currentColor = cursorColor;
 
-    console.log(currentColor);
-
     $('body').css('cursor', '-webkit-image-set( url(images/picker_' + cursorColor + '.svg) 1x, url(images/picker_' + cursorColor + '.svg) 2x), auto');
 
-    createCell(levelCount);
   };
 
-  /* Create Cell */
-
-  var createCell = function(level) {
-    for (var i = 0; i < level; i++) {
-
-      var randomColor = Math.floor(Math.random() * colorLen);
-
-      var $newCell = $('<div class="cell">');
-      var $colorText = $('<h1>');
-
-      $newCell.append($colorText);
-
-      $colorText.text(currentColor);
-      $colorText.css('color', colorVals[randomColor].colorHex);
-
-      // within each cell make a colorWord
-      $game.append($newCell);
-    }
-  };
-
-
-  var colorWord = $('cell > h1');
-  $('body').on('click', colorWord, function(e) {
-    console.log('Check win');
+  $('body').on('click', '.color-word', function(e) {
+    var clickedColor = e.target.innerHTML;
+    var newLevel = Level();
+    newLevel.checkWin(clickedColor);
   });
 
 
@@ -164,5 +144,52 @@ $(document).ready(function() {
   - mouseColor clicks colorWord proceed to next level
   */
 
+  /******************* Level Constructor *******************/
+
+  var Level = function() {
+
+    return {
+      /* Create Cell */
+
+      createCell: function(level) {
+        for (var i = 0; i < level; i++) {
+
+          var randomColor = Math.floor(Math.random() * colorLen);
+
+          var $newCell = $('<div class="cell">');
+          var $colorText = $('<h1 class="color-word">');
+
+          $newCell.append($colorText);
+
+          $colorText.text(currentColor);
+          $colorText.css('color', colorVals[randomColor].colorHex);
+
+          $newCell.css('top', (Math.random() * $(window).height() * 0.8));
+          $newCell.css('left', (Math.random() * $(window).width() * 0.8));
+
+          // within each cell make a colorWord
+          $game.append($newCell);
+        }
+      },
+
+      /* Level Incrementer */
+
+      updateLevel: function() {
+        $('.level-num > p').text('level: ' + levelCount);
+      },
+
+      /* Check Win */
+
+      checkWin: function (colorText) {
+        
+        console.log(colorText);
+        if (colorText === currentColor){
+          console.log("Correct");
+        }
+      }
+
+    };
+
+  };
 
 });

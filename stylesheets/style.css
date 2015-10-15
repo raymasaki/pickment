@@ -73,15 +73,20 @@ a.start-button:hover {
   width: 100vw;
   height: 100vh;
   z-index: 0;
+  overflow: hidden;
 }
-
+#game {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
 .cell {
-  width: 100%;
-  text-align: center;
-  vertical-align: middle;
+  position: absolute;
 }
-
 .cell h1 {
-  line-height: 95vh;
   letter-spacing: -0.021em;
+}
+header {
+  padding: 30px;
+  color: #ECEFF1;
 }
