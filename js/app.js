@@ -69,7 +69,7 @@ var colorVals = [{
   colorHex: '#9E9E9E'
 }];
 
-var pickerColor = 'white';
+var pickerColor = 'default';
 var $game = $('#game');
 var currentColor = null;
 
@@ -95,12 +95,12 @@ $(document).ready(function() {
 
   var $levelCountIntro = $('#level-count > h1');
 
-  levelCount++;
-
-  $levelCountIntro.text("Level " + levelCount);
 
   // level count intro fades out after 1 second
   var levelCountIntro = function() {
+    levelCount++;
+
+    $levelCountIntro.text("Level " + levelCount);
 
     setTimeout(function() {
       $('#level-count').fadeOut('fast');
@@ -134,6 +134,9 @@ $(document).ready(function() {
     newLevel.checkWin(clickedColor);
   });
 
+  var randomColorGen = function () {
+    return Math.floor(Math.random() * colorLen);
+  };
 
   /*
   colorWord logic:
@@ -154,15 +157,38 @@ $(document).ready(function() {
       createCell: function(level) {
         for (var i = 0; i < level; i++) {
 
-          var randomColor = Math.floor(Math.random() * colorLen);
+          // creates a new random color
+          var randomColor = randomColorGen();
 
+          // creates a cell with text
           var $newCell = $('<div class="cell">');
           var $colorText = $('<h1 class="color-word">');
 
           $newCell.append($colorText);
 
-          $colorText.text(currentColor);
-          $colorText.css('color', colorVals[randomColor].colorHex);
+          // on the first loop
+          if (i === 0) {
+            // create the correct color word
+            $colorText.text(currentColor);
+            $colorText.css('color', colorVals[randomColor].colorHex);
+          } else if (i == 1) {
+            // create a colorWord with the color of the currentColor
+            $colorText.text(colorVals[randomColor].colorName);
+
+            var currentHex = null;
+            
+            // Grabs the hex for the current color
+            for (var j = 0; j < colorVals.length; j++) {
+              if (colorVals[j].colorName === currentColor) {
+                currentHex = colorVals[j].colorHex;
+              }
+            }
+
+            $colorText.css('color', currentHex);
+          } else {
+            $colorText.text(colorVals[randomColor].colorName);
+            $colorText.css('color', colorVals[randomColor].colorHex);
+          }
 
           $newCell.css('top', (Math.random() * $(window).height() * 0.8));
           $newCell.css('left', (Math.random() * $(window).width() * 0.8));
@@ -181,10 +207,14 @@ $(document).ready(function() {
       /* Check Win */
 
       checkWin: function (colorText) {
-        
-        console.log(colorText);
+
         if (colorText === currentColor){
           console.log("Correct");
+          $('#level-count').show();
+          $game.empty();
+          levelCountIntro();
+        } else {
+          console.log("Wrong");
         }
       }
 

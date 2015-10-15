@@ -89,4 +89,6 @@ a.start-button:hover {
 header {
   padding: 30px;
   color: #ECEFF1;
+  position: absolute;
+  z-index: 10;
 }
