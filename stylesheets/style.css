@@ -2,6 +2,19 @@ body {
   /* Temporary until I install webfont */
   font-family: SuisseIntl-Medium, sans-serif;
   font-size: 96px;
+  cursor: url('../images/picker.svg'), auto;
+  cursor: -webkit-image-set( url('../images/picker.svg') 1x, url('../images/picker.svg') 2x), auto;
+}
+.picker {
+  width: 100px;
+  height: 100px;
+  background: rgba(255, 255, 255, .9);
+  border-radius: 50px;
+  position: absolute;
+  z-index: 150;
+  filter: blur(20px);
+  -webkit-filter: blur(20px);
+  pointer-events: none;
 }
 
 /* INTRO */
@@ -35,6 +48,16 @@ p.instructions {
 #intro h1 {
   padding-bottom: 30px;
 }
+a.start-button {
+  border-bottom: 5px solid rgba(255, 255, 255, 1);
+  padding-bottom: 0px;
+  transition: all 200ms;
+}
+a.start-button:hover {
+  border-bottom: 5px solid rgba(255, 255, 255, .3);
+  padding-bottom: 10px;
+  transition: all 200ms;
+}
 
 /* LEVEL INTRO */
 
@@ -44,7 +67,6 @@ p.instructions {
   vertical-align: middle;
   line-height: 95vh;
 }
-
 #level-count {
   background: #71BBCE;
   width: 100vw;

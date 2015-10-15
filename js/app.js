@@ -22,11 +22,40 @@ console.log('Loaded');
 10. if incorrect reveals intro div with updated highscore and start replaced with play again
 */
 
-/* Intro Logic */
+/* Global Variables */
+var colorVals = {
+  red: '#F44336',
+  pink: '#E91E63',
+  purple: '#9C27B0',
+  indigo: '#3F51B5',
+  blue: '#2196F3',
+  cyan: '#00BCD4',
+  teal: '#009688',
+  green: '#4CAF50',
+  lime: '#CDDC39',
+  yellow: '#FFEB3B',
+  gold: '#FFC107',
+  orange: '#FF9800',
+  brown: '#795548',
+  grey: '#9E9E9E',
+};
+
 
 $(document).ready(function() {
 
-  var $startButton = $('.start_button');
+  /* Mouse Cursor */
+  // http://stackoverflow.com/questions/3385936/jquery-follow-the-cursor-with-a-div
+
+  $(document).on('mousemove', function(e) {
+    $('.picker').css({
+      left: e.pageX - 35,
+      top: e.pageY - 35
+    });
+  });
+
+  /* Intro Logic */
+
+  var $startButton = $('.start-button');
   var $intro = $('#intro');
 
   // Clicking start button will fade out intro and show level count intro
@@ -45,8 +74,8 @@ $(document).ready(function() {
   $levelCountIntro.text("Level " + levelCount);
 
   // level count intro fades out after 1 second
-  var levelCountIntro = function () {
-    setTimeout( function() {
+  var levelCountIntro = function() {
+    setTimeout(function() {
       $('#level-count').fadeOut('fast');
     }, 1000);
   };
