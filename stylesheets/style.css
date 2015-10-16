@@ -27,14 +27,45 @@ p.instructions {
   color: white;
   z-index: 100;
 }
-#intro > .logo, #intro > p {
+
+
+#intro-text {
+  animation: slidein 600ms normal;
   padding-left: 30px;
 }
-#intro .logo {
+
+@keyframes slidein {
+  0% {
+    transform: translate(0, -500px);
+    animation-timing-function: cubic-bezier(.04,.58,.38,1);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes slideup {
+  0% {
+    transform: translate(0, 500px);
+    animation-timing-function: cubic-bezier(.04,.58,.38,1);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+p.highscore {
+  padding-left: 30px;
+  position: absolute;
+  bottom: 24px;
+  animation: slideup 600ms normal;
+}
+
+#intro-text .logo {
   letter-spacing: -0.021em;
   padding-top: 15px;
 }
-#intro h1 {
+#intro-text h1 {
   padding-bottom: 30px;
 }
 a.start-button {

@@ -15,10 +15,12 @@
 
   <div id="intro">
     <!-- This is where all the intro stuff is. This div will hide once play button is pressed -->
-    <h1 class="logo">pickment</h1>
-    <p class="instructions">click your color picker on the corresponding word not the corresponding color</p>
-    <p><a class="start-button">start</a></p>
-
+    <div id="intro-text">
+      <h1 class="logo">pickment</h1>
+      <p class="instructions">click your color picker on the corresponding word not the corresponding color</p>
+      <p><a class="start-button">start</a></p>
+    </div>
+    <p class="highscore"></p>
   </div>
 
   <div id="game-container">
@@ -30,8 +32,12 @@
     </div>
 
     <header>
-      <div class="level-num"><p></p></div>
-      <div class="timer"><p></p></div>
+      <div class="level-num">
+        <p></p>
+      </div>
+      <div class="timer">
+        <p></p>
+      </div>
     </header>
 
     <div id="game"></div>

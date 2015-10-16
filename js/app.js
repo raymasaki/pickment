@@ -34,11 +34,11 @@ Remaining Bugs:
     - 10 > 9.5 > 9 > 8.5 etc.
   - After level 10(?) it should stop decrementing (maybe 5 seconds)
 - Random improvements:
-  - Jason: Create a random set that displays based on the set so there aren't dupes
+  - ## Jason: Create a random set that displays based on the set so there aren't dupes
   - Two words should not be overlapping
-  - Random word should not include currentColor name besides the correct answer
-  - colorWord should not be the same as colorHex
-  - Random word should not be random word color
+  - ## Random word should not include currentColor name besides the correct answer
+  - ## colorWord should not be the same as colorHex
+  - ## Random word should not be random word color
 - Visual Improvements:
   - sweet gradient animation on the intro screen
   - transition of the logo animating into the screen
@@ -87,10 +87,10 @@ var colorVals = [{
   colorHex: '#FFEB3B'
 }, {
   colorName: 'gold',
-  colorHex: '#FFC107'
+  colorHex: '#FFC400'
 }, {
   colorName: 'orange',
-  colorHex: '#FF9800'
+  colorHex: '#FF6D00'
 }, {
   colorName: 'brown',
   colorHex: '#795548'
@@ -105,6 +105,8 @@ var currentColor = null;
 var timer = 2;
 var colorLen = colorVals.length;
 var levelCount = 0;
+var currentHex = null;
+var previousScore = 0;
 
 
 /******************* Make Tiles *******************/
@@ -146,8 +148,28 @@ function randomize(array) {
   colorVals = array;
 }
 
+/******************* Show Intro *******************/
 
-/* Game */
+var showIntro = function() {
+
+    $('#intro').fadeIn('fast');
+
+    var $highscore = $('p.highscore');
+
+    if (levelCount > previousScore) {
+      previousScore = levelCount;
+      $highscore.text("highscore: level " + previousScore);
+    }
+
+    var $startButton = $('.start-button');
+    $startButton.text("play again");
+
+    levelCount = 0;
+    $game.empty();
+};
+
+
+/******************* Game *******************/
 
 $(document).ready(function() {
 
@@ -173,7 +195,7 @@ $(document).ready(function() {
   var levelCountIntro = function() {
     levelCount++;
 
-    var currentHex = null;
+
 
     // Grabs the hex for the current color
     for (var j = 0; j < colorVals.length; j++) {
@@ -344,8 +366,14 @@ $(document).ready(function() {
           $game.empty();
           levelCountIntro();
         } else {
-          console.log("Wrong");
+          var $levelCountIntro = $('#level-count > h1');
+          $levelCountIntro.text("wrong!");
+          $('#level-count').show();
+          $('#level-count').css('background', currentHex);
+
+          setTimeout(showIntro, 1000);
         }
+
       }
 
     };
