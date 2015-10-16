@@ -14,13 +14,43 @@ console.log('Loaded');
 ## 2. hides intro div
 ## 3. reveals level count div
 ## 4. level count div hides after 1 second
-5. level count var is set in header and timer begins countdown
-6. game shows colorWord from an array with random colorVal from array
-7. mouse has corresponding colorVal = colorWord
-8. user clicks on colorWord that is equal to colorVal
-9. if correct goes to next level
-10. if incorrect reveals intro div with updated highscore and start replaced with play again
+## 5. level count var is set in header
+6. Set timer
+## 7. game shows colorWord from an array with random colorVal from array
+## 8. mouse has corresponding colorVal = colorWord
+## 9. user clicks on colorWord that is equal to colorVal
+## 10. if correct goes to next level
+## 11. if incorrect reveals intro div with updated highscore and start replaced with play again
 */
+
+
+
+/************************
+
+Remaining Bugs:
+
+- Timer not running
+  - Timer should start at a larger number and decrement every level
+    - 10 > 9.5 > 9 > 8.5 etc.
+  - After level 10(?) it should stop decrementing (maybe 5 seconds)
+- Random improvements:
+  - Jason: Create a random set that displays based on the set so there aren't dupes
+  - Two words should not be overlapping
+  - Random word should not include currentColor name besides the correct answer
+  - colorWord should not be the same as colorHex
+  - Random word should not be random word color
+- Visual Improvements:
+  - sweet gradient animation on the intro animation
+  - transition of the logo animating into the screen
+  - pressed state for the word
+  - better hover state for the word
+  - ## every 10 levels make the font size slightly smaller?
+
+
+************************/
+
+
+
 
 /******************* Global Variables *******************/
 
@@ -75,9 +105,34 @@ var currentColor = null;
 var timer = 2;
 
 
+/******************* Make Tiles *******************/
+
+var makeTiles = function() {
+
+  var $tileContainer = $('<div id="tile-container">');
+
+  for (var i = 0; i < 150; i++) {
+    var $tileHeight = ($(window).height() * 0.9) / 15;
+    var $tileWidth = ($(window).width() * 0.9) / 10;
+
+    var $tile = $('<div class="tile">');
+    $tile.attr('tile-num', i);
+    $tile.css('width', $tileWidth);
+    $tile.css('height', $tileHeight);
+
+    $tileContainer.append($tile);
+  }
+
+  $('#game-container').append($tileContainer);
+
+};
+
+
 /* Game */
 
 $(document).ready(function() {
+
+  makeTiles();
 
   /******************* Intro *******************/
 
@@ -123,6 +178,7 @@ $(document).ready(function() {
     var newLevel = Level();
     newLevel.updateLevel();
     newLevel.createCell(levelCount);
+    newLevel.checkSize(levelCount);
     newLevel.levelTimer(timer);
   };
 
@@ -204,8 +260,16 @@ $(document).ready(function() {
             $colorText.css('color', colorVals[randomColor].colorHex);
           }
 
-          $newCell.css('top', (Math.random() * $(window).height() * 0.8));
-          $newCell.css('left', (Math.random() * $(window).width() * 0.8));
+          /* Random Placement */
+          // Somewhat inspired by this: http://stackoverflow.com/questions/20043054/generate-numbers-in-side-div-at-random-position-without-overlapping
+
+          var randomTileNum = Math.round(Math.random() * 150);
+          var $randomTile = $('*[tile-num="' + randomTileNum + '"]');
+          var placementX = $randomTile.position().left;
+          var placementY = $randomTile.position().top;
+
+          $newCell.css('top', placementY);
+          $newCell.css('left', placementX);
 
           // within each cell make a colorWord
           $game.append($newCell);
@@ -222,10 +286,21 @@ $(document).ready(function() {
 
         // set Interval for every 100 millisecond
 
-
-
         $('.timer > p').text(time + ' sec');
 
+      },
+
+      /* Update Size */
+
+      checkSize: function(level) {
+        var $cellText = $('.color-word');
+        if (level >= 10 && level <= 20) {
+          $cellText.css('font-size', '0.8em');
+        } else if (level > 20 && level <= 30) {
+          $cellText.css('font-size', '0.6em');
+        } else if (level > 30) {
+          $cellText.css('font-size', '0.4em');
+        }
       },
 
       /* Check Win */
