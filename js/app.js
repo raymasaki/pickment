@@ -220,7 +220,12 @@ $(document).ready(function() {
 
       levelTimer: function(time) {
 
+        // set Interval for every 100 millisecond
+
+
+
         $('.timer > p').text(time + ' sec');
+
       },
 
       /* Check Win */

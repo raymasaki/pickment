@@ -85,7 +85,25 @@ a.start-button:hover {
 }
 .cell h1 {
   letter-spacing: -0.021em;
+  position: relative;
+  /*animation: poke 200ms reverse;*/
 }
+.cell h1:hover {
+  animation: poke 200ms normal;
+}
+
+@keyframes poke {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(0, -10px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
 header {
   color: #E6E9EB;
   position: absolute;
