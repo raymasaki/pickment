@@ -103,6 +103,8 @@ var pickerColor = 'default';
 var $game = $('#game');
 var currentColor = null;
 var timer = 2;
+var colorLen = colorVals.length;
+var levelCount = 0;
 
 
 /******************* Make Tiles *******************/
@@ -135,13 +137,13 @@ var makeTiles = function() {
  */
 
 function randomize(array) {
-    for (var i = array.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-    }
-    return array;
+  for (var i = array.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
+  colorVals = array;
 }
 
 
@@ -163,8 +165,6 @@ $(document).ready(function() {
   });
 
   /* Level Count */
-
-  var levelCount = 0;
 
   var $levelCountIntro = $('#level-count > h1');
 
@@ -190,6 +190,7 @@ $(document).ready(function() {
       $('#level-count').fadeOut('fast');
     }, 1000);
 
+    randomize(colorVals);
     changePickerColor();
 
     var newLevel = Level();
@@ -201,13 +202,12 @@ $(document).ready(function() {
 
   /* Picker Color */
 
-  var colorLen = colorVals.length;
-
   var changePickerColor = function() {
-    var randomColor = Math.floor(Math.random() * colorLen);
+    // var randomColor = Math.floor(Math.random() * colorLen);
 
-    var newColorHex = colorVals[randomColor].colorHex;
-    var cursorColor = colorVals[randomColor].colorName;
+
+    var newColorHex = colorVals[0].colorHex;
+    var cursorColor = colorVals[0].colorName;
     currentColor = cursorColor;
 
     $('body').css('cursor', '-webkit-image-set( url(images/picker_' + cursorColor + '.svg) 1x, url(images/picker_' + cursorColor + '.svg) 2x), auto');
@@ -228,9 +228,9 @@ $(document).ready(function() {
     $(this).addClass('animated');
   });
 
-  var randomColorGen = function() {
-    return Math.floor(Math.random() * colorLen);
-  };
+  // var randomColorGen = function() {
+  //   return Math.floor(Math.random() * colorLen);
+  // };
 
   /*
   colorWord logic:
@@ -252,8 +252,7 @@ $(document).ready(function() {
       createCell: function(level) {
         for (var i = 0; i < level; i++) {
 
-          // creates a new random color
-          var randomColor = randomColorGen();
+          console.log(i);
 
           // creates a cell with text
           var $newCell = $('<div class="cell">');
@@ -261,33 +260,35 @@ $(document).ready(function() {
 
           $newCell.append($colorText);
 
-          // on the first loop
           if (i === 0) {
 
             // create the correct color word
             $colorText.text(currentColor);
-            $colorText.css('color', colorVals[randomColor].colorHex);
+            $colorText.css('color', colorVals[i + 1].colorHex);
 
-          } else if (i == 1) {
+          } else if (i === 1) {
 
             // create a colorWord with the color of the currentColor
-            $colorText.text(colorVals[randomColor].colorName);
+            $colorText.text(colorVals[i].colorName);
 
-            var currentHex = null;
+            $colorText.css('color', colorVals[i - 1].colorHex);
 
-            // Grabs the hex for the current color
-            for (var j = 0; j < colorVals.length; j++) {
-              if (colorVals[j].colorName === currentColor) {
-                currentHex = colorVals[j].colorHex;
-              }
-            }
+          } else if (i > 12) {
 
-            $colorText.css('color', currentHex);
+            var randomColorNum = Math.floor(Math.random() * colorLen) + 1;
+
+            // console.log(colorVals[randomColorNum].colorName);
+            // console.log(colorVals[randomColorNum].colorHex);
+
+            // debugger;
+
+            $colorText.text(colorVals[randomColorNum].colorName);
+            $colorText.css('color', colorVals[randomColorNum - 1].colorHex);
 
           } else {
 
-            $colorText.text(colorVals[randomColor].colorName);
-            $colorText.css('color', colorVals[randomColor].colorHex);
+            $colorText.text(colorVals[i].colorName);
+            $colorText.css('color', colorVals[i + 1].colorHex);
 
           }
 
