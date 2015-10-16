@@ -88,8 +88,8 @@ a.start-button:hover {
   position: relative;
   /*animation: poke 200ms reverse;*/
 }
-.cell h1:hover {
-  animation: poke 200ms normal;
+.cell h1.animated {
+  animation: poke 250ms;
 }
 
 @keyframes poke {
@@ -97,7 +97,7 @@ a.start-button:hover {
     transform: translate(0, 0);
   }
   50% {
-    transform: translate(0, -10px);
+    transform: translate(0, -15px);
   }
   100% {
     transform: translate(0, 0);

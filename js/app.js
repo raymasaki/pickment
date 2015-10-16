@@ -40,7 +40,7 @@ Remaining Bugs:
   - colorWord should not be the same as colorHex
   - Random word should not be random word color
 - Visual Improvements:
-  - sweet gradient animation on the intro animation
+  - sweet gradient animation on the intro screen
   - transition of the logo animating into the screen
   - pressed state for the word
   - better hover state for the word
@@ -127,6 +127,23 @@ var makeTiles = function() {
 
 };
 
+/******************* Shuffle colorVal Array *******************/
+
+/*
+ * Randomize array element order in-place.
+ * Using Durstenfeld shuffle algorithm.
+ */
+
+function randomize(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    return array;
+}
+
 
 /* Game */
 
@@ -203,6 +220,14 @@ $(document).ready(function() {
     newLevel.checkWin(clickedColor);
   });
 
+  $('body').on('mouseout', '.color-word', function() {
+    $(this).removeClass('animated');
+  });
+
+  $('body').on('mouseover', '.color-word', function() {
+    $(this).addClass('animated');
+  });
+
   var randomColorGen = function() {
     return Math.floor(Math.random() * colorLen);
   };
@@ -238,10 +263,13 @@ $(document).ready(function() {
 
           // on the first loop
           if (i === 0) {
+
             // create the correct color word
             $colorText.text(currentColor);
             $colorText.css('color', colorVals[randomColor].colorHex);
+
           } else if (i == 1) {
+
             // create a colorWord with the color of the currentColor
             $colorText.text(colorVals[randomColor].colorName);
 
@@ -255,15 +283,18 @@ $(document).ready(function() {
             }
 
             $colorText.css('color', currentHex);
+
           } else {
+
             $colorText.text(colorVals[randomColor].colorName);
             $colorText.css('color', colorVals[randomColor].colorHex);
+
           }
 
           /* Random Placement */
-          // Somewhat inspired by this: http://stackoverflow.com/questions/20043054/generate-numbers-in-side-div-at-random-position-without-overlapping
 
           var randomTileNum = Math.round(Math.random() * 150);
+
           var $randomTile = $('*[tile-num="' + randomTileNum + '"]');
           var placementX = $randomTile.position().left;
           var placementY = $randomTile.position().top;
