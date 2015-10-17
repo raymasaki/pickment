@@ -107,6 +107,7 @@ var colorLen = colorVals.length;
 var levelCount = 0;
 var currentHex = null;
 var previousScore = 0;
+var tileArray = [];
 
 
 /******************* Make Tiles *******************/
@@ -124,10 +125,13 @@ var makeTiles = function() {
     $tile.css('width', $tileWidth);
     $tile.css('height', $tileHeight);
 
+    tileArray.push(i);
+
     $tileContainer.append($tile);
   }
 
   $('#game-container').append($tileContainer);
+  // randomize(tileArray);
 
 };
 
@@ -145,7 +149,7 @@ function randomize(array) {
     array[i] = array[j];
     array[j] = temp;
   }
-  colorVals = array;
+  array = array;
 }
 
 /******************* Show Intro *******************/
@@ -272,9 +276,10 @@ $(document).ready(function() {
       /* Create Cell */
 
       createCell: function(level) {
-        for (var i = 0; i < level; i++) {
 
-          console.log(i);
+        randomize(tileArray);
+
+        for (var i = 0; i < level; i++) {
 
           // creates a cell with text
           var $newCell = $('<div class="cell">');
@@ -297,15 +302,8 @@ $(document).ready(function() {
 
           } else if (i > 12) {
 
-            var randomColorNum = Math.floor(Math.random() * colorLen) + 1;
-
-            // console.log(colorVals[randomColorNum].colorName);
-            // console.log(colorVals[randomColorNum].colorHex);
-
-            // debugger;
-
-            $colorText.text(colorVals[randomColorNum].colorName);
-            $colorText.css('color', colorVals[randomColorNum - 1].colorHex);
+            $colorText.text(colorVals[i - 12].colorName);
+            $colorText.css('color', colorVals[i - 13].colorHex);
 
           } else {
 
@@ -316,7 +314,7 @@ $(document).ready(function() {
 
           /* Random Placement */
 
-          var randomTileNum = Math.round(Math.random() * 150);
+          var randomTileNum = tileArray[i];
 
           var $randomTile = $('*[tile-num="' + randomTileNum + '"]');
           var placementX = $randomTile.position().left;
@@ -349,10 +347,13 @@ $(document).ready(function() {
       checkSize: function(level) {
         var $cellText = $('.color-word');
         if (level >= 10 && level <= 20) {
+          console.log('level 10-20');
           $cellText.css('font-size', '0.8em');
         } else if (level > 20 && level <= 30) {
+          console.log('level 20-30');
           $cellText.css('font-size', '0.6em');
         } else if (level > 30) {
+          console.log('level 30+');
           $cellText.css('font-size', '0.4em');
         }
       },
@@ -364,6 +365,7 @@ $(document).ready(function() {
         if (colorText === currentColor) {
           $('#level-count').show();
           $game.empty();
+
           levelCountIntro();
         } else {
           var $levelCountIntro = $('#level-count > h1');
