@@ -2,7 +2,7 @@
 
 @authorName: Ray Masaki
 @dateCreated: 10.14.2015
-@lastUpdated: 10.15.2015
+@lastUpdated: 10.17.2015
 @projectName: Pickment
 
 ************************/
@@ -33,15 +33,17 @@ Remaining Bugs:
   - Timer should start at a larger number and decrement every level
     - 10 > 9.5 > 9 > 8.5 etc.
   - After level 10(?) it should stop decrementing (maybe 5 seconds)
+  - Can't figure out how to do timer
 - Random improvements:
   - ## Jason: Create a random set that displays based on the set so there aren't dupes
   - Two words should not be overlapping
   - ## Random word should not include currentColor name besides the correct answer
   - ## colorWord should not be the same as colorHex
   - ## Random word should not be random word color
+  - Level
 - Visual Improvements:
-  - sweet gradient animation on the intro screen
-  - transition of the logo animating into the screen
+  - ## sweet gradient animation on the intro screen
+  - ## transition of the logo animating into the screen
   - pressed state for the word
   - better hover state for the word
   - ## every 10 levels make the font size slightly smaller?
@@ -102,7 +104,7 @@ var colorVals = [{
 var pickerColor = 'default';
 var $game = $('#game');
 var currentColor = null;
-var timer = 2;
+var timer = 10; // in ms
 var colorLen = colorVals.length;
 var levelCount = 0;
 var currentHex = null;
@@ -156,21 +158,48 @@ function randomize(array) {
 
 var showIntro = function() {
 
-    $('#intro').fadeIn('fast');
+  $('#intro').fadeIn('fast');
 
-    var $highscore = $('p.highscore');
+  var $highscore = $('p.highscore');
 
-    if (levelCount > previousScore) {
-      previousScore = levelCount;
-      $highscore.text("highscore: level " + previousScore);
-    }
+  if (levelCount > previousScore) {
+    previousScore = levelCount;
+    $highscore.text("highscore: level " + previousScore);
+  }
 
-    var $startButton = $('.start-button');
-    $startButton.text("play again");
+  var $startButton = $('.start-button');
+  $startButton.text("play again");
 
-    levelCount = 0;
-    $game.empty();
+  levelCount = 0;
+  $game.empty();
 };
+
+
+/******************* Level Timer *******************/
+
+// var timerInterval = setInterval(function() {
+//
+//   timer -= 1;
+//   $('.timer > p').text(timer + ' sec');
+//
+// }, 1000);
+
+// var levelTimeout = function() {
+//
+//   setTimeout(function() {
+//
+//     var $levelCountIntro = $('#level-count > h1');
+//     $levelCountIntro.text("out of time!");
+//     $('#level-count').show();
+//     $('#level-count').css('background', currentHex);
+//
+//     // clearInterval(timerInterval);
+//     setTimeout(showIntro, 1000);
+//
+//   }, timer * 1000);
+//
+// };
+
 
 
 /******************* Game *******************/
@@ -199,8 +228,6 @@ $(document).ready(function() {
   var levelCountIntro = function() {
     levelCount++;
 
-
-
     // Grabs the hex for the current color
     for (var j = 0; j < colorVals.length; j++) {
       if (colorVals[j].colorName === currentColor) {
@@ -223,7 +250,6 @@ $(document).ready(function() {
     newLevel.updateLevel();
     newLevel.createCell(levelCount);
     newLevel.checkSize(levelCount);
-    newLevel.levelTimer(timer);
   };
 
   /* Picker Color */
@@ -243,6 +269,7 @@ $(document).ready(function() {
   $('body').on('click', '.color-word', function(e) {
     var clickedColor = e.target.innerHTML;
     var newLevel = Level();
+
     newLevel.checkWin(clickedColor);
   });
 
@@ -334,14 +361,6 @@ $(document).ready(function() {
         $('.level-num > p').text('level: ' + levelCount);
       },
 
-      levelTimer: function(time) {
-
-        // set Interval for every 100 millisecond
-
-        $('.timer > p').text(time + ' sec');
-
-      },
-
       /* Update Size */
 
       checkSize: function(level) {
@@ -363,17 +382,19 @@ $(document).ready(function() {
       checkWin: function(colorText) {
 
         if (colorText === currentColor) {
+
           $('#level-count').show();
           $game.empty();
 
           levelCountIntro();
         } else {
+
           var $levelCountIntro = $('#level-count > h1');
           $levelCountIntro.text("wrong!");
           $('#level-count').show();
           $('#level-count').css('background', currentHex);
 
-          setTimeout(showIntro, 1000);
+          setTimeout(showIntro, 1500);
         }
 
       }
