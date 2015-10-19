@@ -1,6 +1,6 @@
 # pickment
 
-http://raymasaki.com/pickment/
+http://pickment.bitballoon.com/
 
 ## Technologies Used
 1. HTML
