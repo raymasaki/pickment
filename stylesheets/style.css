@@ -1,8 +1,12 @@
-@font-face{
-	font-family: 'SuisseIntl-Medium';
-	src: url('SuisseIntl-Medium-WebS.eot');
-	src: url('SuisseIntl-Medium-WebS.woff') format('woff'),
-	     url('SuisseIntl-Medium-WebS.ttf') format('truetype'),
+@font-face {
+    font-family: 'SuisseIntl-Medium';
+    src: url('SuisseIntl-Medium-WebS.eot');
+    src: url('SuisseIntl-Medium-WebS.eot?#iefix') format('embedded-opentype'),
+        url('SuisseIntl-Medium-WebS.woff') format('woff'),
+        url('SuisseIntl-Medium-WebS.ttf') format('truetype'),
+        url('SuisseIntl-Medium-WebS.svg#FontName') format('svg');
+    font-weight: normal;
+    font-style: normal;
 }
 
 body {
